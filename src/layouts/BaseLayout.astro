@@ -18,7 +18,7 @@ const DEFAULTS = {
 
 const props = Astro.props as Props;
 
-const site = (Astro.site?.toString() ?? 'https://jobbly.app').replace(/\/$/, '');
+const site = (Astro.site?.toString() ?? 'https://landing-jobbly.netlify.app/').replace(/\/$/, '');
 const currentUrl = props.url ?? new URL(Astro.url.pathname, site).toString();
 
 const title = props.title ?? DEFAULTS.title;

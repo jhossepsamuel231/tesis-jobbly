@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://jobbly.app/sitemap.xml
+Sitemap: https://landing-jobbly.netlify.app//sitemap.xml

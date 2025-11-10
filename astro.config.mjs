@@ -4,6 +4,6 @@ import sitemap from '@astrojs/sitemap';
 
 // Update the `site` with your production URL
 export default defineConfig({
-  site: 'https://jobbly.app',
+  site: 'https://landing-jobbly.netlify.app',
   integrations: [tailwind({ applyBaseStyles: true }), sitemap()],
 });
