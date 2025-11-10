@@ -1,0 +1,321 @@
+---
+const appStoreUrl = "https://apps.apple.com/";
+const playStoreUrl = "https://play.google.com/store";
+import CardStack from "./CardStack.astro";
+---
+
+<header class="relative overflow-hidden">
+  <div
+    class="container min-h-[100svh] grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-center py-10 lg:py-12"
+  >
+    <div>
+      <div
+        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/10 text-sm text-slate-300"
+      >
+        <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+        Nueva forma de encontrar tu primera oportunidad laboral
+      </div>
+
+      <h1
+        class="mt-6 text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight"
+        data-animate="hero"
+      >
+        JOBBLY
+        <span
+          id="tw-wrap"
+          class="relative inline-block align-baseline max-w-full"
+        >
+          <span
+            id="tw-text"
+            class="tw-gradient inline text-transparent bg-clip-text bg-gradient-to-r from-primary to-sky-400 whitespace-normal break-words"
+            aria-live="polite"></span>
+          <!-- Cursor en flujo inline (queda pegado al final del texto) -->
+          <span id="tw-caret" class="tw-caret-inline" aria-hidden="true"></span>
+        </span>
+      </h1>
+
+      <p class="mt-5 text-slate-300 max-w-xl" data-animate="sub">
+        Busca por carrera, recibe alertas personalizadas, chatea con
+        reclutadores y crea tu perfil en minutos. Diseñada para estudiantes y
+        recién graduados.
+      </p>
+
+      <!-- === BOTONES NUEVOS === -->
+      <div class="mt-8 flex flex-wrap gap-3" data-animate="buttons">
+        <button
+          id="btn-download"
+          type="button"
+          class="btn btn-primary"
+          aria-label="Descargar la app"
+        >
+          Descargar
+        </button>
+
+        <button
+          id="btn-qr"
+          type="button"
+          class="btn btn-ghost"
+          aria-haspopup="dialog"
+          aria-controls="qrModal"
+        >
+          Escanear código QR
+        </button>
+      </div>
+      <!-- === /BOTONES NUEVOS === -->
+
+      <p class="mt-3 text-sm text-slate-400">
+        Totalmente gratis • Sin anuncios intrusivos
+      </p>
+    </div>
+
+    <div class="relative">
+      <div
+        class="absolute -top-10 -right-10 w-72 h-72 bg-primary/20 blur-3xl rounded-full"
+      >
+      </div>
+
+      <div class="relative mx-auto max-w-sm" data-animate="mockup">
+        <CardStack
+          images={[
+            "/images/login.jpeg",
+            "/images/lista_trabajos.jpeg",
+            "/images/Publicando_trabajo.png",
+          ]}
+          alts={[
+            "Pantalla de inicio de sesión de JOBBLY",
+            "Lista de trabajos en JOBBLY",
+            "Publicando trabajo en JOBBLY",
+          ]}
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- === MODAL QR === -->
+  <div
+    id="qrModal"
+    class="fixed inset-0 z-50 hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="qrTitle"
+  >
+    <!-- Fondo -->
+    <div
+      class="absolute inset-0 bg-black/60 backdrop-blur-sm opacity-0 transition-opacity duration-300"
+      data-qr-backdrop
+    >
+    </div>
+
+    <!-- Panel -->
+    <div
+      class="relative mx-auto max-w-md px-6 sm:px-8 w-full h-full sm:h-auto sm:mt-24 flex items-center sm:items-start justify-center"
+    >
+      <div
+        class="w-full rounded-2xl bg-slate-900/90 border border-white/10 shadow-2xl p-6 sm:p-8 scale-95 opacity-0 translate-y-4 transition-all duration-300"
+        data-qr-panel
+      >
+        <div class="flex items-start justify-between gap-4">
+          <h2 id="qrTitle" class="text-lg font-semibold text-white">
+            Escanea el código QR
+          </h2>
+          <button
+            id="qrClose"
+            class="rounded-full p-2 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-primary"
+            aria-label="Cerrar modal"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div class="mt-5">
+          <img
+            src="/images/qr.jpeg"
+            alt="Código QR para descargar la app"
+            class="w-full rounded-xl border border-white/10"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+
+        <div class="mt-5 text-right">
+          <button id="qrClose2" class="btn btn-primary" aria-label="Cerrar">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- === /MODAL QR === -->
+
+  <style is:inline>
+    @keyframes tw-blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    .tw-gradient {
+      -webkit-text-fill-color: transparent;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    /* Cursor en flujo inline: queda exactamente al final del texto */
+    .tw-caret-inline {
+      display: inline-block;
+      width: 1.5px;
+      height: 1em; /* sigue el tamaño de fuente de la línea actual */
+      margin-left: 2px; /* un pequeño respiro respecto a la última letra */
+      background: linear-gradient(180deg, #6c63ff, #38bdf8);
+      animation: tw-blink 1s steps(1, end) infinite;
+      vertical-align: -0.1em; /* alinea con la línea de texto */
+      pointer-events: none;
+    }
+
+    /* Mantener altura y línea cuando está vacío para que el caret no salte */
+    #tw-text:empty::before {
+      content: "\200b";
+    }
+  </style>
+
+  <script is:inline type="module">
+    import { animate, stagger } from "@motionone/dom";
+
+    const hero = document.querySelector('[data-animate="hero"]');
+    const sub = document.querySelector('[data-animate="sub"]');
+    const buttons = document.querySelector('[data-animate="buttons"]');
+    const mock = document.querySelector('[data-animate="mockup"]');
+
+    if (hero)
+      animate(
+        hero,
+        { opacity: [0, 1], y: [20, 0] },
+        { duration: 0.6, easing: "ease-out" },
+      );
+
+    if (sub)
+      animate(
+        sub,
+        { opacity: [0, 1], y: [16, 0] },
+        { duration: 0.6, delay: 0.1, easing: "ease-out" },
+      );
+
+    if (buttons)
+      animate(
+        buttons.children,
+        { opacity: [0, 1], y: [12, 0] },
+        {
+          delay: stagger(0.08, { start: 0.2 }),
+          duration: 0.5,
+          easing: "ease-out",
+        },
+      );
+
+    if (mock)
+      animate(
+        mock,
+        { opacity: [0, 1], scale: [0.96, 1] },
+        { duration: 0.6, delay: 0.15, easing: "ease-out" },
+      );
+  </script>
+
+  <script is:inline>
+    // Typewriter loop (sin cálculos de posición: el cursor va inline)
+    const phrases = [
+      "Conecta tu carrera con oportunidades reales",
+      "Encuentra prácticas y empleos de medio tiempo",
+      "Recibe alertas y chatea con reclutadores",
+      "Crea tu perfil en minutos",
+      "Da el primer paso hacia tu futuro",
+    ];
+
+    const tw = document.getElementById("tw-text");
+    let pi = 0,
+      ci = 0,
+      typing = true;
+    const showPauseMs = 2000;
+    const typeSpeed = 55;
+    const deleteSpeed = 35;
+
+    function tick() {
+      if (!tw) return;
+      const text = phrases[pi];
+
+      if (typing) {
+        tw.textContent = text.slice(0, ci + 1);
+        ci++;
+        if (ci === text.length) {
+          typing = false;
+          setTimeout(tick, showPauseMs);
+          return;
+        }
+        setTimeout(tick, typeSpeed);
+      } else {
+        tw.textContent = text.slice(0, ci - 1);
+        ci--;
+        if (ci === 0) {
+          typing = true;
+          pi = (pi + 1) % phrases.length;
+          setTimeout(tick, typeSpeed);
+          return;
+        }
+        setTimeout(tick, deleteSpeed);
+      }
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener(
+        "DOMContentLoaded",
+        () => requestAnimationFrame(tick),
+        { once: true },
+      );
+    } else {
+      requestAnimationFrame(tick);
+    }
+
+    // ====== Lógica: Descargar + Modal QR ======
+    const DOWNLOAD_URL =
+      "https://drive.google.com/drive/folders/1f5oKO3S7ylD0NAtvQmW-Gqa4sdlCXO9k?usp=sharing";
+
+    const btnDownload = document.getElementById("btn-download");
+    const btnQR = document.getElementById("btn-qr");
+    const modal = document.getElementById("qrModal");
+    const backdrop = modal?.querySelector("[data-qr-backdrop]");
+    const panel = modal?.querySelector("[data-qr-panel]");
+    const closeBtns = [
+      document.getElementById("qrClose"),
+      document.getElementById("qrClose2"),
+    ];
+
+    btnDownload?.addEventListener("click", () => {
+      window.open(DOWNLOAD_URL, "_blank", "noopener,noreferrer");
+    });
+
+    function openModal() {
+      if (!modal || !backdrop || !panel) return;
+      modal.classList.remove("hidden");
+      requestAnimationFrame(() => {
+        backdrop.classList.remove("opacity-0");
+        panel.classList.remove("opacity-0", "scale-95", "translate-y-4");
+      });
+      // foco accesible
+      panel.setAttribute("tabindex", "-1");
+      panel.focus({ preventScroll: true });
+    }
+
+    function closeModal() {
+      if (!modal || !backdrop || !panel) return;
+      backdrop.classList.add("opacity-0");
+      panel.classList.add("opacity-0", "scale-95", "translate-y-4");
+      setTimeout(() => modal.classList.add("hidden"), 250);
+    }
+
+    btnQR?.addEventListener("click", openModal);
+    backdrop?.addEventListener("click", closeModal);
+    closeBtns.forEach((btn) => btn?.addEventListener("click", closeModal));
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !modal?.classList.contains("hidden"))
+        closeModal();
+    });
+  </script>
+</header>

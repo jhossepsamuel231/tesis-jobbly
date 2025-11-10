@@ -1,0 +1,63 @@
+---
+const features = [
+  {
+    title: "Filtro personalizado",
+    desc: "Configura habilidades, disponibilidad y modalidad para ver lo que va contigo.",
+    icon: "search",
+  },
+  {
+    title: "Recomendaciones por habilidades",
+    desc: "Descubre trabajos sugeridos según tu perfil y experiencia.",
+    icon: "bell",
+  },
+  {
+    title: "Notificaciones y chat",
+    desc: "Te avisamos cuando te aceptan o te escriben, y puedes chatear al instante.",
+    icon: "chat",
+  },
+  {
+    title: "Sin CV, perfil rápido",
+    desc: "Postula con tus habilidades; ideal para tu primer paso laboral.",
+    icon: "profile",
+  },
+];
+---
+
+<section
+  id="caracteristicas"
+  aria-labelledby="features-title"
+  class="py-16 lg:py-24"
+>
+  <div class="container">
+    <h2 id="features-title" class="text-3xl md:text-4xl font-bold">
+      Todo lo que necesitas para despegar
+    </h2>
+    <p class="mt-3 text-slate-300 max-w-2xl">
+      Pensada para estudiantes, con herramientas que te conectan con
+      oportunidades reales y un proceso súper ágil.
+    </p>
+
+    <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {
+        features.map((f) => (
+          <article
+            class="glass rounded-2xl p-6 hover:translate-y-[-2px] transition will-change-transform"
+            aria-label={f.title}
+          >
+            <div class="w-12 h-12 rounded-xl bg-primary/20 grid place-items-center items-center text-center text-primary">
+              <img
+                src={`/icons/${f.icon}.svg`}
+                alt=""
+                class="w-6 h-6"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <h3 class="mt-4 font-semibold text-lg">{f.title}</h3>
+            <p class="mt-2 text-slate-300 text-sm">{f.desc}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

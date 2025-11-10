@@ -1,0 +1,50 @@
+---
+const faqs = [
+  {
+    q: "¿JOBBLY es gratis?",
+    a: "Sí, la app es gratuita para estudiantes.",
+  },
+  {
+    q: "¿En qué lugares está disponible?",
+    a: "Actualmente solo está disponible para estudiantes de la Universidad Peruana Unión, en Perú.",
+  },
+  {
+    q: "¿Cómo funcionan las alertas?",
+    a: "Configura tus intereses y ubicación. Te avisamos cuando haya coincidencias.",
+  },
+  {
+    q: "¿Necesito CV?",
+    a: "Puedes subir uno o crear tu perfil en minutos dentro de JOBBLY.",
+  },
+  {
+    q: "¿Mis datos están seguros?",
+    a: "Usamos cifrado y buenas prácticas de seguridad. Solo compartimos con tu permiso.",
+  },
+];
+---
+
+<section id="faq" aria-labelledby="faq-title" class="py-16 lg:py-24">
+  <div class="container">
+    <h2 id="faq-title" class="text-3xl md:text-4xl font-bold">
+      Preguntas frecuentes
+    </h2>
+    <div class="mt-8 space-y-4">
+      {
+        faqs.map((f, i) => (
+          <details
+            class="glass rounded-xl p-5 group"
+            {...(i === 0 && { open: true })}
+          >
+            <summary class="cursor-pointer font-semibold marker:content-[''] flex items-center justify-between">
+              {f.q}
+              <span class="ml-4 inline-flex w-6 h-6 items-center justify-center rounded-full bg-white/10 text-slate-300 group-open:rotate-45 transition">
+                +
+              </span>
+            </summary>
+            <div class="mt-3 text-slate-300">{f.a}</div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>

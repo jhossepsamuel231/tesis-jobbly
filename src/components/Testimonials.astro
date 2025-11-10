@@ -1,0 +1,33 @@
+---
+import 'swiper/css';
+import 'swiper/css/autoplay';
+
+const testimonials = [
+  { quote: 'Conseguí mis prácticas en menos de 2 semanas.', name: 'Camila R.', degree: 'Ingeniería Industrial', uni: 'PUCP' },
+  { quote: 'Las alertas me ayudaron a aplicar a tiempo.', name: 'Luis F.', degree: 'Administración', uni: 'UNAM' },
+  { quote: 'El chat con reclutadores es un golazo.', name: 'Valentina M.', degree: 'Diseño', uni: 'U. de los Andes' },
+  { quote: 'Súper fácil crear mi perfil y postular.', name: 'Diego H.', degree: 'Computación', uni: 'ITESM' },
+];
+---
+<section id="testimonios" aria-labelledby="testi-title" class="py-16 lg:py-24">
+  <div class="container">
+    <h2 id="testi-title" class="text-3xl md:text-4xl font-bold">Historias de estudiantes</h2>
+    <p class="mt-3 text-slate-300 max-w-2xl">Opiniones reales de quienes ya están construyendo su camino con JOBBLY.</p>
+
+    <div class="mt-8">
+      <script is:inline type="module">
+        import 'swiper/element/bundle';
+      </script>
+      <swiper-container autoplay-delay="3500" autoplay-disable-on-interaction="false" loop="true" slides-per-view="1" breakpoints='{"640": {"slidesPerView": 1}, "768": {"slidesPerView": 2}, "1024": {"slidesPerView": 3}}' class="pb-8">
+        {testimonials.map((t) => (
+          <swiper-slide>
+            <figure class="glass rounded-2xl p-6 h-full flex flex-col">
+              <blockquote class="text-slate-200 flex-1">“{t.quote}”</blockquote>
+              <figcaption class="mt-4 text-sm text-slate-400">{t.name} • {t.degree} — {t.uni}</figcaption>
+            </figure>
+          </swiper-slide>
+        ))}
+      </swiper-container>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,40 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Hero from "@components/Hero.astro";
+import Features from "@components/Features.astro";
+import FAQ from "@components/FAQ.astro";
+import CTA from "@components/CTA.astro";
+import Footer from "@components/Footer.astro";
+
+const seo = {
+  title: "JOBBLY — Conecta tu carrera con oportunidades reales",
+  description:
+    "Recomendaciones por habilidades, chat con empleadores y notificaciones para tu primer empleo. Sin CV: crea tu perfil y postula en minutos.",
+  image: "/images/og-home.jpg",
+};
+---
+
+<BaseLayout {...seo}>
+  <Fragment slot="head">
+    <link rel="preload" as="image" href="/images/og-home.jpg" imagesrcset="/images/og-home.jpg 1x" />
+    <script type="application/ld+json">
+      {JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "JOBBLY — Conecta tu carrera con oportunidades reales",
+        "url": Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : Astro.url.href,
+        "description":
+          "Recomendaciones por habilidades, chat con empleadores y notificaciones para tu primer empleo. Sin CV: crea tu perfil y postula en minutos."
+      })}
+    </script>
+  </Fragment>
+
+  <main id="contenido" role="main" tabindex="-1">
+    <Hero />
+    <Features />
+    <FAQ />
+    <CTA />
+  </main>
+
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,161 @@
+---
+const appStoreUrl = "https://apps.apple.com/"; // (sin uso)
+const playStoreUrl = "https://play.google.com/store";
+const DOWNLOAD_URL =
+  "https://drive.google.com/drive/folders/1f5oKO3S7ylD0NAtvQmW-Gqa4sdlCXO9k?usp=sharing";
+---
+
+<section id="descargar" aria-labelledby="cta-title" class="py-16 lg:py-24">
+  <div class="container">
+    <div
+      class="relative overflow-hidden rounded-3xl p-10 lg:p-16 bg-gradient-to-r from-indigo-600 via-violet-600 to-blue-600"
+    >
+      <div
+        class="absolute -top-10 -right-10 w-72 h-72 bg-white/10 blur-3xl rounded-full"
+      >
+      </div>
+
+      <h2 id="cta-title" class="text-3xl md:text-4xl font-bold">
+        Da el primer paso hoy
+      </h2>
+      <p class="mt-3 text-indigo-100 max-w-2xl">
+        Descarga JOBBLY y encuentra tu primera experiencia laboral. Tu futuro
+        empieza aquí.
+      </p>
+
+      <!-- Botones -->
+      <div class="mt-6 flex flex-wrap gap-3">
+        <!-- 1) Descargar: link directo (fallback si JS falla) -->
+        <a
+          id="cta-download"
+          href={DOWNLOAD_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn bg-white text-indigo-700 hover:bg-white/90"
+          aria-label="Descargar la app"
+        >
+          Descargar
+        </a>
+
+        <!-- 2) QR (abre modal con JS) -->
+        <button
+          id="cta-qr"
+          type="button"
+          class="btn btn-ghost border-white/30 text-white"
+          aria-haspopup="dialog"
+          aria-controls="qrCtaModal"
+        >
+          Escanear código QR
+        </button>
+      </div>
+      <!-- /Botones -->
+    </div>
+  </div>
+
+  <!-- Modal QR -->
+  <div
+    id="qrCtaModal"
+    class="fixed inset-0 z-[60] hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="qrCtaTitle"
+  >
+    <!-- Backdrop -->
+    <div
+      class="absolute inset-0 bg-black/60 backdrop-blur-sm opacity-0 transition-opacity duration-300"
+      data-qr-backdrop
+    >
+    </div>
+
+    <!-- Panel -->
+    <div
+      class="relative mx-auto max-w-md px-6 sm:px-8 w-full h-full sm:h-auto sm:mt-24 flex items-center sm:items-start justify-center"
+    >
+      <div
+        class="w-full rounded-2xl bg-slate-900/90 border border-white/10 shadow-2xl p-6 sm:p-8 scale-95 opacity-0 translate-y-4 transition-all duration-300"
+        data-qr-panel
+      >
+        <div class="flex items-start justify-between gap-4">
+          <h3 id="qrCtaTitle" class="text-lg font-semibold text-white">
+            Escanea el código QR
+          </h3>
+          <button
+            id="qrCtaClose"
+            class="rounded-full p-2 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-primary"
+            aria-label="Cerrar modal">✕</button
+          >
+        </div>
+
+        <div class="mt-5">
+          <img
+            src="/images/qr.jpeg"
+            alt="Código QR para descargar la app"
+            class="w-full rounded-xl border border-white/10"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+
+        <div class="mt-5 text-right">
+          <button
+            id="qrCtaClose2"
+            class="btn bg-white text-indigo-700 hover:bg-white/90"
+            >Cerrar</button
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Modal QR -->
+
+  <script is:inline>
+    // Aseguramos que el DOM exista antes de conectar los eventos
+    function ready(fn) {
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", fn, { once: true });
+      } else {
+        fn();
+      }
+    }
+
+    ready(() => {
+      const btnQR = document.getElementById("cta-qr");
+      const modal = document.getElementById("qrCtaModal");
+      const backdrop = modal?.querySelector("[data-qr-backdrop]");
+      const panel = modal?.querySelector("[data-qr-panel]");
+      const closeBtns = [
+        document.getElementById("qrCtaClose"),
+        document.getElementById("qrCtaClose2"),
+      ];
+
+      function openModal() {
+        if (!modal || !backdrop || !panel) return;
+        modal.classList.remove("hidden");
+        // animación de entrada
+        requestAnimationFrame(() => {
+          backdrop.classList.remove("opacity-0");
+          panel.classList.remove("opacity-0", "scale-95", "translate-y-4");
+        });
+        // foco accesible
+        panel.setAttribute("tabindex", "-1");
+        panel.focus({ preventScroll: true });
+      }
+
+      function closeModal() {
+        if (!modal || !backdrop || !panel) return;
+        // animación de salida
+        backdrop.classList.add("opacity-0");
+        panel.classList.add("opacity-0", "scale-95", "translate-y-4");
+        setTimeout(() => modal.classList.add("hidden"), 250);
+      }
+
+      btnQR?.addEventListener("click", openModal);
+      backdrop?.addEventListener("click", closeModal);
+      closeBtns.forEach((b) => b?.addEventListener("click", closeModal));
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !modal?.classList.contains("hidden"))
+          closeModal();
+      });
+    });
+  </script>
+</section>

@@ -1,0 +1,102 @@
+---
+export interface Props {
+  images: string[];
+  alts?: string[];
+}
+const { images = [], alts = [] } = Astro.props as Props;
+---
+
+<div
+  class="relative mx-auto w-full max-w-[300px] sm:max-w-[340px] aspect-[9/16]"
+>
+  <div class="absolute inset-0 grid place-items-center">
+    <div class="relative w-[92%] h-[92%]">
+      {
+        images.slice(0, 3).map((src, i) => (
+          <button
+            class="card absolute inset-0 m-auto h-[94%] w-[88%] overflow-visible transition-transform duration-300 ease-out will-change-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+            style={`transform-origin:center;`}
+            data-index={i}
+            aria-label={alts[i] ?? `Vista ${i + 1}`}
+          >
+            <div class="relative mx-auto bg-black rounded-[18px] border border-white/10 shadow-[0_6px_18px_rgba(0,0,0,0.28)] p-[3px] sm:p-[4px]">
+              <div class="pointer-events-none absolute top-1.5 left-1/2 -translate-x-1/2 w-[90px] h-[28px] bg-[#0a0a0a] rounded-full shadow-[0_2px_6px_rgba(0,0,0,0.35)] flex items-center justify-end pr-[8px]">
+                <div class="w-[14px] h-[14px] rounded-full bg-[#0b0b0b] shadow-[inset_0_0_6px_rgba(255,255,255,0.05),0_0_2px_rgba(0,0,0,0.6)]" />
+              </div>
+              <img
+                src={src}
+                alt={alts[i] ?? `Vista ${i + 1}`}
+                class="h-full w-full object-cover select-none rounded-[15px]"
+                loading={i === 2 ? "eager" : "lazy"}
+                decoding="async"
+              />
+            </div>
+          </button>
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  const root = document.currentScript
+    ? document.currentScript.parentElement
+    : null;
+  if (root) {
+    const cards = Array.from(root.querySelectorAll(".card"));
+    // Order front-to-back indices. Start with middle as front for balance
+    let order = [1, 2, 0].slice(0, cards.length);
+
+    const applyLayout = () => {
+      cards.forEach((el) => el.style.setProperty("z-index", "10"));
+      const states = [
+        { z: 30, r: "0deg", tx: "0px", ty: "0px", s: 1 }, // front
+        { z: 20, r: "-7deg", tx: "-16px", ty: "10px", s: 0.96 }, // left/back
+        { z: 20, r: "7deg", tx: "16px", ty: "10px", s: 0.96 }, // right/back
+      ];
+      order.forEach((cardIdx, pos) => {
+        const el = cards[cardIdx];
+        const st = states[pos] ?? states[2];
+        el.style.transform = `translate(${st.tx}, ${st.ty}) rotate(${st.r}) scale(${st.s})`;
+        el.style.zIndex = String(st.z);
+        el.setAttribute("aria-pressed", pos === 0 ? "true" : "false");
+      });
+    };
+
+    const bringToFront = (idx) => {
+      // Re-order so clicked index becomes front
+      const pos = order.indexOf(idx);
+      if (pos <= 0) return; // already front
+      // Move chosen to front, keep relative order of others
+      order = [order[pos], ...order.filter((v, i) => i !== pos)];
+      applyLayout();
+    };
+
+    cards.forEach((el, idx) => {
+      // Solo click/tap o teclado
+      el.addEventListener("click", () => bringToFront(idx));
+      el.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          bringToFront(idx);
+        }
+        if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+          e.preventDefault();
+          // Cycle focus to previous card (visually back) for accessibility
+          const next = (idx - 1 + cards.length) % cards.length;
+          cards[next].focus();
+        }
+        if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+          e.preventDefault();
+          const next = (idx + 1) % cards.length;
+          cards[next].focus();
+        }
+      });
+    });
+
+    // Initial layout after mount
+    requestAnimationFrame(applyLayout);
+    // Responsiveness: re-apply on resize to avoid visual glitches
+    window.addEventListener("resize", applyLayout, { passive: true });
+  }
+</script>
